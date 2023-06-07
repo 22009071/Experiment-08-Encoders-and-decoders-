@@ -1,96 +1,124 @@
-# Experiment-08- Encoders-and-decoders 
-### AIM: To implement 8 to 3 Encoder and  3to8 Decoder using verilog and validate its outputs
+# Exp-6-Synchornous-counters - up counter and down counter 
+### AIM: To implement 4 bit up and down counters and validate  functionality.
 ### HARDWARE REQUIRED:  – PC, Cyclone II , USB flasher
 ### SOFTWARE REQUIRED:   Quartus prime
 ### THEORY 
 
-## Encoders
-Binary code of N digits can be used to store 2N distinct elements of coded information. This is what encoders and decoders are used for. Encoders convert 2N lines of input into a code of N bits and Decoders decode the N bits into 2N lines.
+## UP COUNTER 
+The counter is a digital sequential circuit and here it is a 4 bit counter, which simply means it can count from 0 to 15 and vice versa based upon the direction of counting (up/down). 
 
-1. Encoders –
-An encoder is a combinational circuit that converts binary information in the form of a 2N input lines into N output lines, which represent N bit code for the input. For simple encoders, it is assumed that only one input line is active at a time.
+The counter (“count“) value will be evaluated at every positive (rising) edge of the clock (“clk“) cycle.
+The Counter will be set to Zero when “reset” input is at logic high.
+The counter will be loaded with “data” input when the “load” signal is at logic high. Otherwise, it will count up or down.
+The counter will count up when the “up_down” signal is logic high, otherwise count down
 
-As an example, let’s consider Octal to Binary encoder. As shown in the following figure, an octal-to-binary encoder takes 8 input lines and generates 3 output lines.
+Since we know that binary count sequences follow a pattern of octave (factor of 2) frequency division, and that J-K flip-flop multivibrators set up for the “toggle” mode are capable of performing this type of frequency division, we can envision a circuit made up of several J-K flip-flops, cascaded to produce four bits of output.
+The main problem facing us is to determine how to connect these flip-flops together so that they toggle at the right times to produce the proper binary sequence.
+Examine the following binary count sequence, paying attention to patterns preceding the “toggling” of a bit between 0 and 1:
+Binary count sequence, paying attention to patterns preceding the “toggling” of a bit between 0 and 1.
 
-![image](https://user-images.githubusercontent.com/36288975/171543588-bc0746df-a173-4b35-989e-5fb7d385fe8a.png)
-## Figure -01 3 to 8 Encoder 
-
-
-Implementation –
-
-X = D4 + D5 + D6 + D7
-Y = D2 +D3 + D6 + D7
-Z = D1 + D3 + D5 + D7 
-Hence, the encoder can be realised with OR gates as follows:
-
-
-![image](https://user-images.githubusercontent.com/36288975/171543740-68403b82-aa93-4c98-9343-f32b14885a2e.png)
-## Figure -02 3 to 8 Encoder implenentation 
-
- ### Decoders 
-A decoder does the opposite job of an encoder. It is a combinational circuit that converts n lines of input into 2n lines of output.
-
-Let’s take an example of 3-to-8 line decoder.
-Implementation –
-D0 is high when X = 0, Y = 0 and Z = 0. Hence,
-
-D0 = X’ Y’ Z’ 
-Similarly,
-
-D1 = X’ Y’ Z
-D2 = X’ Y Z’
-D3 = X’ Y Z
-D4 = X Y’ Z’
-D5 = X Y’ Z
-D6 = X Y Z’
-D7 = X Y Z 
-
-
-![image](https://user-images.githubusercontent.com/36288975/171543978-ee2d0671-2846-40a1-8705-507fd6287a49.png)
-## Figure -03 8 to 3 Decoder 
+Note that each bit in this four-bit sequence toggles when the bit before it (the bit having a lesser significance, or place-weight), toggles in a particular direction: from 1 to 0.
 
 
 
-![image](https://user-images.githubusercontent.com/36288975/171543866-5a6eace6-8683-49d7-9c4f-a7cb30ec3035.png)
-## Figure -04 8 to 3 Decoder implementation 
+ 
+ 
 
+Starting with four J-K flip-flops connected in such a way to always be in the “toggle” mode, we need to determine how to connect the clock inputs in such a way so that each succeeding bit toggles when the bit before it transitions from 1 to 0.
+
+The Q outputs of each flip-flop will serve as the respective binary bits of the final, four-bit count:
+
+ 
+ 
+
+Four-bit “Up” Counter
+![image](https://user-images.githubusercontent.com/36288975/169644758-b2f4339d-9532-40c5-af40-8f4f8c942e2c.png)
+
+
+
+## DOWN COUNTER 
+
+As well as counting “up” from zero and increasing or incrementing to some preset value, it is sometimes necessary to count “down” from a predetermined value to zero allowing us to produce an output that activates when the zero count or some other pre-set value is reached.
+
+This type of counter is normally referred to as a Down Counter, (CTD). In a binary or BCD down counter, the count decreases by one for each external clock pulse from some preset value. Special dual purpose IC’s such as the TTL 74LS193 or CMOS CD4510 are 4-bit binary Up or Down counters which have an additional input pin to select either the up or down count mode.
+![image](https://user-images.githubusercontent.com/36288975/169644844-1a14e123-7228-4ed8-81a9-eb937dff4ac8.png)
+
+
+4-bit Count Down Counter
 ### Procedure
-/* write all the steps invloved */
-
-
-
+```
+1.Create a new project in QuartusII software.
+2.Name the project as uc for upcounter and dc for down counter.
+3.Create a new verilog hdl file in the project file.
+4.Name the module as dc and uc for down counter and up counter.
+5.Within the module declare input and output variables.
+6.Create a loop using if-else with condition parameter as reset value.
+7.End the loop.
+8.End the module.
+```
 ### PROGRAM 
+```
 /*
-Program for Endocers and Decoders  and verify its truth table in quartus using Verilog programming.
-Developed by: 
-RegisterNumber:  
+Program for flipflops  and verify its truth table in quartus using Verilog programming.
+Developed by:A.J.PRANAV
+RegisterNumber:212222230107
+```
 */
+### UPCOUNTER
+```
+module uc(clk,A);
+input clk;
+output reg [3:0]A;
+always @ (posedge clk)
+begin
+A[3]=(A[2]&A[1]&A[0])^A[3];
+A[2]=(A[1]&A[0])^A[2];
+A[1]=(A[0]^A[1]);
+A[0]=1^A[0];
+end
+endmodule
+```
+### DOWNCOUNTER
 
+```
+module dc(clk,A);
+input clk;
+output reg [3:0]A;
+always @ (posedge clk)
+begin
+A[3]=(~A[2]& ~A[1] &~A[0])^A[3];
+A[2]=(~A[1] & ~A[0])^A[2];
+A[1]=(~A[0]^A[1]);
+A[0]=1^A[0];
+end
+endmodule
+```
 
+### RTL LOGIC UP COUNTER AND DOWN COUNTER  
 
+ ### UPCOUNTER
+![UC](./rtl%20uc.png)
 
+### DOWNCOUNTER
+![DC](./rtl%20dc.png)
 
+### TIMING DIGRAMS FOR COUNTER  
 
-### RTL LOGIC  
+### UPCOUNTER
+![UC](./waveuc.png)
 
-
-
-
-
-
-
-
-### TIMING DIGRAMS  
-
-
-
+### DOWNCOUNTER
+![DC](./wavedc.png)
 
 
 ### TRUTH TABLE 
 
+### UPCOUNTER
+![UC](./uc.png)
 
-
-
+### DOWNCOUNTER
+![DC](./dc.png)
 
 
 ### RESULTS 
+Thus,the 4-bit up and down counter is implemented successfully.
