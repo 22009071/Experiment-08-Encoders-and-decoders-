@@ -75,8 +75,8 @@ End the module.
 ```
 /*
 Program for Encoders and verify its truth table in quartus using Verilog programming.
-Developed by: H.Berjin Shabeck
-RegisterNumber:212222240018
+Developed by: kabilanT 
+RegisterNumber:212222230059
 */
 module encoder(a,b,c,do,d1,d2,d3,d4,d5,d6,d7);
 output a, b, c; 
@@ -97,8 +97,8 @@ endmodule
 ```
 /*
 Program for Decoders and verify its truth table in quartus using Verilog programming.
-Developed by: R Guruprasad
-RegisterNumber:212222240033
+Developed by: kabilan T
+RegisterNumber:212222230059
 */
 module decoder(d0,d1,d2,d3,d4,d5,d6,d7,a,b,c);
 input a,b,c:
